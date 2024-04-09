@@ -1,0 +1,5 @@
+Buffer Overflow Prep Contunied 
+
+Mona config : !mona config -set workingfolder c:\mona\%p
+
+Fuzzing with fuzzer2.py
