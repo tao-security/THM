@@ -1,0 +1,41 @@
+Brute force using ZAP
+
+this one is about Brute Force Heroes room from TryHackMe, task6
+
+It has been quite interesting for me. 
+
+So the task was primarly about ZAP, it could have been straigthforward. BUT when fuzzing it comes that the indication the task gave to stop the valid creds wasnt valid anymore (Click on the Size Resp. Body column and organise the results so that the largest response size is at the top. After a few minutes, you should find that you get a different response size... Like this:) 
+
+But there wasnt a single different response, they all were multiple so couldnt tell.
+
+So I get back to using Patator
+
+The intructions suggest that the to correct creds return a page containing "Welcome to the password protected area <username>", sign didnt read that.
+
+That how i proceed.
+
+Capture a request and copy the Cookie from the headers and using it in the following ----->
+
+patator http_fuzz method=GET --thread=64 timeout=10 \
+0=userlist-1628709824038.txt 1=passwords-1628441697834.txt \
+url="http://10.10.26.235/vulnerabilities/brute/?username=FILE0&password=FILE1&Login=Login" \
+header="Cookie: PHPSESSID=dphm4nt3hpo1cqrndgrovo4mii; security=low" \
+-x ignore:fgrep="Username and/or password incorrect."
+
+I provide username and password files respectively with FILE0 and FILE1, 0= and 1=
+
+the last line from the patator command means to ignore all responses containing the string "Username and/or password incorrect." 
+
+But that doesnt make the brute force successeful. the username and password are directly provided in the request itself not in the body
+
+So I realized that I get false positives when it reaches a password contains a special character as the request is broken and
+
+THe response doesnt contain "Username and/or password incorrect". to workaround this i first decided to remove all passwords containing special characters from the list
+
+THey werent many, so no issue. Then start fuzzing with simple again for some times without any false positive or valid creds. 
+
+I cancel and go for second workaround. only use the passwords with special characters since they were just 9. But I have to direct URl encode them to avoid broken requests and false positives
+
+I proceed to fuzz again and within secs i found valid creds : Admin:1qaz%40WSX / the url decoded password is 1qaz@WSX
+
+Check for image : patator2 poc
