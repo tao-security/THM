@@ -22,6 +22,8 @@ url="http://10.10.26.235/vulnerabilities/brute/?username=FILE0&password=FILE1&Lo
 header="Cookie: PHPSESSID=dphm4nt3hpo1cqrndgrovo4mii; security=low" \
 -x ignore:fgrep="Username and/or password incorrect."
 
+Alt I could have used : -x ignore:fgrep!=""Welcome to the password protected area" // to ignore all except the one containing the string which is what I am after.
+
 I provide username and password files respectively with FILE0 and FILE1, 0= and 1=
 
 the last line from the patator command means to ignore all responses containing the string "Username and/or password incorrect." 
