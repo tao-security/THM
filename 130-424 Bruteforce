@@ -41,3 +41,5 @@ I cancel and go for second workaround. only use the passwords with special chara
 I proceed to fuzz again and within 120 secs i found valid creds : Admin:1qaz%40WSX / the url decoded password is 1qaz@WSX
 
 Check for image : patator2 poc
+
+Seems something else is expected as responses? yeah -------> buster:rhymes // Fuzz with complete wordlists. the previous is also valid cred though
