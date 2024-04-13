@@ -38,6 +38,6 @@ THey werent many, so no issue. Then start fuzzing with simple again for some tim
 
 I cancel and go for second workaround. only use the passwords with special characters since they were just 9. But I have to direct URl encode them to avoid broken requests and false positives
 
-I proceed to fuzz again and within secs i found valid creds : Admin:1qaz%40WSX / the url decoded password is 1qaz@WSX
+I proceed to fuzz again and within 120 secs i found valid creds : Admin:1qaz%40WSX / the url decoded password is 1qaz@WSX
 
 Check for image : patator2 poc
