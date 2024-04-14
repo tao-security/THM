@@ -1,0 +1,30 @@
+Brute forcing SSH with Hydra + Patator
+
+hydra -L 8_letter_user.txt -p '1qaz%40WSX\' ssh://10.10.54.147 -t 4 -V -f
+
+People who have used Hydra will be familiar with the syntax here, but for those who aren't, let's break it down:
+ 
+
+ -f this sets hydra to stop running once it finds a match
+ -L userlist.txt  this is the path to the user name file. If we knew the username and wanted a static value we'd use  -l username 
+ -P encoded_passwords.txt  this is the path to the password file. Again if we knew the password and wanted a static value we'd use  -p password 
+ MACHINE_IP our target
+ -t 4 ssh the number of threads and the attack mode (Hydra can be used for more than just http_post it seems). You can specify more threads, but it will throw a warning and suggest just 4 - So, lets stick with that.
+ -V verbose mode - We could leave this off if we didn't want to see the print outs of the attempts
+
+
+
+patator ssh_login host=10.10.54.147 user=FILE0 password=_@@_FILE1_@@_ 0=8_letter_user.txt 1=22pass\\.txt -x ignore:mesg='Authentication failed.' -x quit:mesg!='Authentication failed.' -e_@@_:url -t 64
+
+As with our hydra command, let's break this down:
+
+ ssh_login the method we'll be using
+ host=MACHINE_IP  our target
+ user=FILE0 password=_@@_FILE1_@@_  the file placeholders for our passwords and usernames. If we wanted a static value, we would just put the username / password, like user=username a key thing to note here is that our password file is bracketed by _@@_  . That is tied into our encoding.
+ 1=userlist.txt 0=found_passwords.txt the files for our placeholders. Don't get them in the wrong order!
+ -x ignore:mesg='Authentication failed.' patator is verbose by default, so if we want to ignore the failed attempts, we need to include an ignore condition.
+ -x quit:mesg!='Authentication failed.' the equivalent of hydras -f, sets the exit condition . In this instance, we will quit when we get a message this isn't Authentication failed.
+ -e _@@_:<encoding_type> the encoding type. There are a few to choose from, so check the patator help menu (type patator ssh_login -h )
+Patator works slightly differently to Hydra. With Hydra, we had to specify a text file that had our encoded passwords in it already. For Patator we can create a plaintext file called found_passwords.txt and pass an encoding type as a parameter. Patator will then encode the plain text password with this encoding type for us. So before running the above command, you will need to create a file called found_passwords.txt containing the two passwords found in Task 5 and Task 6 without any encoding. When running the command, you will not see any output until we find the password as we are ignoring any response that returns Authentication failed. Remember though, Patator will display the plaintext password without the encoding.
+
+The downside is is that we can only specify one encoding type at a time when we run the command
