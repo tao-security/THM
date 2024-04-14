@@ -1,6 +1,6 @@
 Brute forcing SSH with Hydra + Patator
 
-hydra -L 8_letter_user.txt -p '1qaz%40WSX\' ssh://10.10.54.147 -t 4 -V -f
+hydra -L 9_letter_user.txt -p '1qaz%40WSX\' ssh://10.10.54.147 -t 4 -V -f  // tommyboy1
 
 People who have used Hydra will be familiar with the syntax here, but for those who aren't, let's break it down:
  
@@ -28,3 +28,23 @@ As with our hydra command, let's break this down:
 Patator works slightly differently to Hydra. With Hydra, we had to specify a text file that had our encoded passwords in it already. For Patator we can create a plaintext file called found_passwords.txt and pass an encoding type as a parameter. Patator will then encode the plain text password with this encoding type for us. So before running the above command, you will need to create a file called found_passwords.txt containing the two passwords found in Task 5 and Task 6 without any encoding. When running the command, you will not see any output until we find the password as we are ignoring any response that returns Authentication failed. Remember though, Patator will display the plaintext password without the encoding.
 
 The downside is is that we can only specify one encoding type at a time when we run the command
+
+
+
+hashcat -a 3 -m <mode> hash.txt <mask>
+john hash.txt --mask=<mask>
+
+
+Now the mask is essentially how we tell Hashcat the key space to brute force. It requires that we know a few details about the password we're cracking in advance, like how many characters and what those characters are (ideally). The more information we have, the more we can make sure our mask is accurate and reduce the key space, making our brute force hash crack attempt quicker. Using this information we can use the hashcat built in charsets to create a mask to match our password and crack it. For example, using the charsets provided by hashcat if we wanted to brute force a 5 character password that is made up of all digit characters, except the middle one, which is an upper case character our mask would be:
+
+?d?d?u?d?d
+
+Making our whole command (if this was say an SHA1 hash):
+
+hashcat -a 3 -m 100 hash.txt ?d?d?u?d?d
+
+This will then cycle through creating passwords that match this mask, for example 11A11, 21A11, 31A11, etc. Hashing them (using the provided hash type, in this case SHA1), and then testing them to see if they match the provided hash. So if our hashed password was 12E45, eventually this would happen:
+
+
+mask value for 2 lowercases, 1 digit and 2 lowercases angain?l?l?d?l?l
+
