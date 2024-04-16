@@ -1,0 +1,41 @@
+Rust is a compiled low-level language developped in 2015 aiming to be as same speed as c++
+
+Rust goals: fast. secure. productive.
+
+Rust is completely memory safe. This means that exploits involving memory aren't possible in Rust, unless you explicitly specify unsafe Rust code.
+
+The memory safety is guaranteed by the concept of ownership. All Rust code follows these rules:
+
+Each value has a variable, called an owner.
+There can only be one owner at a time.
+When the owner goes out of scope, the value will be dropped.
+Values can be moved or borrowed between variables, but no value can have more than 1 owner.
+
+Foreign function interfacing : Rust supports calls from functions written in other languages.
+
+
+
+Install rust with the rustup script
+
+Use cargo to work with rust
+
+Simple Hello World in Rust: fn main() {
+    println!("Hello, world!");
+}
+
+! represents macro
+
+Steps to create rust program using Cargo.
+
+1. Create a folder for the project, cd into it, and run cargo init. This will create necessary files. example is the cargo.toml file which holds infos about your project like name, author, version...
+
+every rust project needs main.rs as file, it is in src directory. this is your main file to write code
+
+2. Run your program with cargo run. cargo will compile code and create files in the target directory. program runs.
+
+you could also run your program in two steps, first you build to get a binary and then you use the binary to run the program.
+
+cargo build for unoptimized build / cargo build --release for optimezed build. Rust actualy has 4 profiles for optimization level, 0 to 3
+
+
+
