@@ -37,5 +37,25 @@ you could also run your program in two steps, first you build to get a binary an
 
 cargo build for unoptimized build / cargo build --release for optimezed build. Rust actualy has 4 profiles for optimization level, 0 to 3
 
+declare constant in Rust with 'const' keyword. they are immutable and will always be immutable. tradition to name constant in all uppercase
+
+Example :
+
+const THREE_ThOUSAND: u32 = 3_000; // _ 1s just for readabilily, it is used to denote space
+
+fn main(){
+    let word = "Rustceans";
+    let word = word.len();
+    println!("Rustceans is {} long", word)
+}
+
+In that main function, we have changed the type of the immutable variable word, but it still immutable after all operations. We say that the second word shadows the first one.
+
+But the above wont work on a mutable variable as it can't change type. The same applies to a constant.
+
+
+
+
+
 
 
