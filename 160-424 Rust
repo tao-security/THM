@@ -53,6 +53,32 @@ In that main function, we have changed the type of the immutable variable word, 
 
 But the above wont work on a mutable variable as it can't change type. The same applies to a constant.
 
+let ports: u32 = 65535
+
+The : u32 states that the variable ports is of size u32.
+
+The u means unsigned, and the 32 is how many bits it has.
+
+Unsigned integers can only ever be positive, signed integers can be both positive and negative.
+
+Integers range from 16 bits up to 128 bits. Some operating systems can't use integers higher than u32, and using such large integer types may slow down the program on some systems.
+
+There are two types of strings in Rust. String and &str.
+
+String is a growable allocated data structure whereas str is an immutable fixed-length string somewhere in memory.
+
+&str is a string slice of string.
+
+What's the smallest sized signed integer in rust is i16
+
+Create a mutable u32 variable called "tryhackme" and assign it the number 9 ------> let mut tryhackme: u32 = 9
+
+lite 'tryhackme: u32', 'datastructures: String' is called typehinting. we hint tryhackme to be a variable holding an unsigned integer and datastructures to be a variable holding a string.
+
+
+
+
+
 
 
 
