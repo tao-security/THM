@@ -76,6 +76,45 @@ Create a mutable u32 variable called "tryhackme" and assign it the number 9 ----
 lite 'tryhackme: u32', 'datastructures: String' is called typehinting. we hint tryhackme to be a variable holding an unsigned integer and datastructures to be a variable holding a string.
 
 
+fn to_ip_address(ip: String) -> IpAddr{   -----> is just the head for function definition by means the function takes in a string as argument and return a value of type IpAddr.
+
+to return something we use return, to break out of a loop, we use break.
+
+if a function returns an integer, the last expression could just be '6', and because 6 always evaluate to 6, it is valid. but not something like six: u16
+
+a function can be nested inside a function with the same name.
+
+There are 3 loops in rust: loop, while and for.
+
+'loop' will loop infinetly intill we tell it to stop with break keyword or ctrl+c
+
+fn main(){
+    loop {
+        println!("This is an infinity loop!");
+        break;
+    }
+}
+
+'while' loop lopps while the condition is true.
+
+fn main(){
+let number: u16 = 9;
+while number != 0 {
+println!("Number {} ", number);
+number -= 1;
+}
+}
+
+'for' loop can be used to iterate over elements of collection.
+
+fn main(){
+let vowels = ['a','e','i','o','u'];
+for element in vowels.iter() {
+    println!("This is a vowel : {}", element);
+    }
+}
+
+Note that we turn vowels into an iterable with vowels.iter()
 
 
 
