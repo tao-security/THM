@@ -116,6 +116,28 @@ for element in vowels.iter() {
 
 Note that we turn vowels into an iterable with vowels.iter()
 
+Zero cost abstraction is:
+
+"What you don’t use, you don’t pay for. And what you do use, you couldn’t do any better if you coded by hand."
+
+Let’s talk about the 2 parts of this sentence.
+
+"What you don’t use, you don’t pay for."
+
+The language shouldn’t have a global cost for a feature that isn’t used. Let’s say to use a for loop, the language needs to have some massive 1gb file that slows down everything else. If we never use a for loop, we still pay for the for loop!
+
+"And what you do use, you couldn’t do any better if you coded by hand."
+
+Here’s the kicker.
+
+Say you wrote some code, a function that calculated Fibonacci numbers. And you compiled this code down into assembly.
+
+Now let’s say you hand-write assembly to do the same function — calculate Fibonacci numbers but this time in assembly.
+
+Handwriting it in assembly would mean we would either gain no performance, or we would lose performance.
+
+By using zero cost abstractions, we write abstracted code (not handwritten assembly) and we couldn’t do any better if we tried to hand-write assembly. Now that’s cool!
+
 
 
 
