@@ -138,6 +138,87 @@ Handwriting it in assembly would mean we would either gain no performance, or we
 
 By using zero cost abstractions, we write abstracted code (not handwritten assembly) and we couldn’t do any better if we tried to hand-write assembly. Now that’s cool!
 
+fn sum_of_squares(input: &[i32]) -> i32 {
+    input.iter()
+         .map(|&i| i * i)
+         .sum()
+}
+This is our previous code.
+
+use rayon::prelude::*;
+fn sum_of_squares(input: &[i32]) -> i32 {
+    input.par_iter() // <-- just change that!
+         .map(|&i| i * i)
+         .sum()
+}
+
+what permits to to apply threading to the iter is RAYON external crate (library) for rust. // instead of input.iter(), we use input.par_iter() to apply multi-threading. 
+
+in Rust. we can assign values based on if statement on one line. eg. .....> let result = if var == 6 {15} else {200};
+
+In Rust, unless you explitely tell the compiler to not, errors must always be handled.
+
+Errors handling in Rust:
+
+1. use of unwrap() :: it just tell the compiler to go ahead, the value is appropriate, but if it not, rust will return an error,
+
+use std::fs::File;
+
+fn main() {
+    let f = File::open("hello.txt").unwrap();
+}
+
+2. match : just just work like try except in python // If alright we proceed but if not, then Error
+
+use std::fs::File;
+
+fn main() {
+    let f = File::open("hello);
+    match f {
+        Ok(file) => file,
+        Err(_) => panic!("Couldn't open file."),
+    }
+}
+
+3. ?
+
+The ? operator states "if the result is Ok, carry on in this function. Else if it is an Err, propagate it back up the stack to the function that called me. "
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let f = File::open("username.txt");
+
+    let mut f = match f {
+        Ok(file) => file,
+        Err(e) => return Err(e),
+    };
+
+    let mut s = String::new();
+
+    match f.read_to_string(&mut s) {
+        Ok(_) => Ok(s),
+        Err(e) => Err(e),
+    }
+}
+We have 2 matches in this code. A bit unruly. Ideally if we fail to open the file, or fail to read to string we propagate a single error back up the stack saying that this function failed.
+
+If it didn't, we should return the Ok result. That way, the function that called us will receive a Result type that it can more easily handle, and without us dealing with multiple match statements.
+
+fn read_username_from_file() -> Result<String, io::Error> {
+    let mut f = File::open("username.txt")?;
+    let mut s = String::new();
+
+    f.read_to_string(&mut s)?;
+
+    Ok(s)
+}
+Conclusion
+This is one of the most important concepts in Rust. Errors normally do not happen, because every error has to be dealt with in some way. This helps keep your code safe.
+
+
+So if you are sure the result will return Ok, you use unwrap. If you suspect an Error, you use '?'
+
+
+
 
 
 
