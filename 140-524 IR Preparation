@@ -1,0 +1,23 @@
+The notable IR process consists of the following phases:
+
+Preparation: Ensures that the organisation can effectively react to a breach with laid down procedures.
+Identification: Operational deviations must be noted and determined to cause adverse effects.
+Analysis or Scoping: The organisation determines the extent of a security incident, including identifying the affected systems, the type of data at risk, and the potential impact on the organisation.
+Containment: Damage limitation is paramount, therefore, isolating affected systems and preserving forensic evidence is required.
+Eradication: Adversarial artefacts and techniques will be removed, restoring affected systems.
+Recovery & Lessons Learned: Business operations are to resume fully after removing all threats and restoring systems to full function. Additionally, the organisation considers the experience, updates its response capabilities, and conducts updated training based on the incident.
+
+Chain of custody documents : These documents are meant to track the flow of information, evidence handling and reporting when addressing any incident.
+
+
+Jump Bag : a kit containing the necessary incident-handling tools
+
+
+Each kit will be unique; however, as an incident responder, the following items are worth having in your arsenal:
+
+Media drives to store evidence being collected.
+Disk imaging and host forensic software such as FTK Imager, EnCase, and The Sleuth Kit.
+Network tap to mirror and monitor traffic.
+Cables and adapters such as USB, SATA, and card readers to accommodate common scenarios.
+PC repair kits that include screwdriver sets and tweezers.
+Copies of incident response forms and communication playbooks.
